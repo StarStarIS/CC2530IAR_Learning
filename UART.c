@@ -1,94 +1,130 @@
 #include <ioCC2530.h>
-#include <string.h>
 
-unsigned char rxTemp = 0;
+#define LED1   P1_4
+#define LED2   P0_1
+#define LED3   P1_0
+#define LED4   P1_1
+#define PIN1_7 P1_7
 
-// 函数声明
-void Delay_Ms(unsigned int xms);
+#define LED_ON  0
+#define LED_OFF 1
+
+static unsigned char uart_cmd_step = 0;
+static unsigned char uart_led_index = 0;
+
 void Uart0_Init(void);
-void Uart0_Send_String(unsigned char *Data, int len);
+void Led_Init(void);
+void Led_Control(unsigned char ledIndex, unsigned char ledState);
+void Uart0_Parse_Command(unsigned char rxData);
 
-/*************************************************
- *
- * 函数名称：void Delay_Ms(unsigned int xms)
- * 功能描述：延时函数
- * 参数说明：xms：延时的时间（以 MS 为单位）
- *
- **************************************************/
-void Delay_Ms(unsigned int xms)
+void main(void)
 {
-    unsigned int i, j;
-    for (i = xms; i > 0; i--)
-        for (j = 578; j > 0; j--);
-}
+    Led_Init();
+    Uart0_Init();
 
-/**************************************************
- * 串口初始化函数
- **************************************************/
-void Uart0_Init(void)
-{
-    CLKCONCMD &= ~0x40;      // 设置系统时钟源为32MHZ晶振
-    while (CLKCONSTA & 0x40); // 等待晶振稳定
-    CLKCONCMD &= ~0x47;      // 设置系统主时钟频率为32MHZ
-
-    PERCFG = 0x00;           // 位置1 P0口
-    P0SEL = 0x0c;            // P0用作串口
-    P2DIR &= ~0xC0;          // P0优先作为UART0
-    U0CSR |= 0x80;           // 串口设置为UART方式
-
-    U0GCR &= 0x1F;
-    U0GCR |= 8;
-
-    U0BAUD |= 59;            // 波特率设为9600
-    UTX0IF = 1;              // UART0 TX中断标志初始置位1
-
-    U0CSR |= 0x40;           // 允许接收
-    IEN0 |= 0x84;            // 开总中断，接收中断
-}
-
-
-/**************************************************
- * 串口发送字符串函数
- **************************************************/
-void Uart0_Send_String(unsigned char *Data, int len)
-{
-    int i;
-    for (i = 0; i < len; i++)
+    while (1)
     {
-        U0DBUF = *Data++;
-        while (UTX0IF == 0);
-        UTX0IF = 0;
     }
 }
 
-
-/**************************************************
- * 主函数
- **************************************************/
-void main(void)
+void Led_Init(void)
 {
-    Uart0_Init();
-    while (1)
+    P1SEL &= ~(0x10 | 0x01 | 0x02 | 0x80);
+    P1DIR |= (0x10 | 0x01 | 0x02 | 0x80);
+
+    P0SEL &= ~0x02;
+    P0DIR |= 0x02;
+
+    LED1 = LED_OFF;
+    LED2 = LED_OFF;
+    LED3 = LED_OFF;
+    LED4 = LED_OFF;
+    PIN1_7 = 0;
+}
+
+void Led_Control(unsigned char ledIndex, unsigned char ledState)
+{
+    unsigned char ledValue;
+
+    ledValue = (ledState == 1) ? LED_ON : LED_OFF;
+
+    switch (ledIndex)
     {
-        if (rxTemp != 0)
+    case 1:
+        LED1 = ledValue;
+        break;
+    case 2:
+        LED2 = ledValue;
+        break;
+    case 3:
+        LED3 = ledValue;
+        break;
+    case 4:
+        LED4 = ledValue;
+        break;
+    default:
+        break;
+    }
+}
+
+void Uart0_Parse_Command(unsigned char rxData)
+{
+    /* Command format: 11->LED1 ON, 10->LED1 OFF ... 41->LED4 ON */
+    if ((rxData == '\r') || (rxData == '\n') || (rxData == ' '))
+    {
+        return;
+    }
+
+    if (uart_cmd_step == 0)
+    {
+        if ((rxData >= '1') && (rxData <= '4'))
         {
-            Uart0_Send_String(&rxTemp, 1);
-            rxTemp = 0;
+            uart_led_index = rxData - '0';
+            uart_cmd_step = 1;
+        }
+    }
+    else
+    {
+        if ((rxData == '0') || (rxData == '1'))
+        {
+            Led_Control(uart_led_index, rxData - '0');
+            uart_cmd_step = 0;
+        }
+        else if ((rxData >= '1') && (rxData <= '4'))
+        {
+            uart_led_index = rxData - '0';
+            uart_cmd_step = 1;
+        }
+        else
+        {
+            uart_cmd_step = 0;
         }
     }
 }
 
+void Uart0_Init(void)
+{
+    CLKCONCMD &= ~0x40;
+    while (CLKCONSTA & 0x40);
+    CLKCONCMD &= ~0x47;
 
-/**************************************************
- * 函 数 名 : Uart0_ISR
- * 功能描述 : 中断服务函数
- * 输入参数 : NONE
- * 输出参数 : NONE
- * 返 回 值 : NONE
- **************************************************/
+    PERCFG = 0x00;
+    P0SEL = 0x0C;
+    P2DIR &= ~0xC0;
+    U0CSR |= 0x80;
+
+    U0GCR &= 0x1F;
+    U0GCR |= 8;
+    U0BAUD |= 59;
+    UTX0IF = 1;
+
+    U0CSR |= 0x40;
+    IEN0 |= 0x84;
+}
+
 #pragma vector = URX0_VECTOR
 __interrupt void Uart0_ISR(void)
 {
-    URX0IF = 0;       // 清中断标志
-    rxTemp = U0DBUF;  // 读取接收到的数据
+    URX0IF = 0;
+    Uart0_Parse_Command(U0DBUF);
 }

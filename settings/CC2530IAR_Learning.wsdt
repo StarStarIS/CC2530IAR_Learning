@@ -22,9 +22,10 @@
         <ColumnWidth2>295</ColumnWidth2>
         <ColumnWidth3>73</ColumnWidth3>
       </Build>
+      <TerminalIO/>
     </Static>
     <Windows>
-      <Wnd0>
+      <Wnd2>
         <Tabs>
           <Tab>
             <Identity>TabID-6666-28846</Identity>
@@ -38,8 +39,8 @@
           </Tab>
         </Tabs>
         <SelectedTab>0</SelectedTab>
-      </Wnd0>
-      <Wnd1>
+      </Wnd2>
+      <Wnd3>
         <Tabs>
           <Tab>
             <Identity>TabID-22078-30194</Identity>
@@ -49,7 +50,7 @@
           </Tab>
         </Tabs>
         <SelectedTab>0</SelectedTab>
-      </Wnd1>
+      </Wnd3>
     </Windows>
     <Editor>
       <Pane>
@@ -57,9 +58,9 @@
           <Factory>TextEditor</Factory>
           <Filename>$WS_DIR$\UART.c</Filename>
           <XPos>0</XPos>
-          <YPos>45</YPos>
-          <SelStart>692</SelStart>
-          <SelEnd>692</SelEnd>
+          <YPos>0</YPos>
+          <SelStart>1601</SelStart>
+          <SelEnd>1601</SelEnd>
         </Tab>
         <ActiveTab>0</ActiveTab>
       </Pane>
@@ -81,11 +82,17 @@
             </Toolbar-07851710>
           </Sizes>
         </Row0>
+        <Row1>
+          <Sizes/>
+        </Row1>
+        <Row2>
+          <Sizes/>
+        </Row2>
       </Top>
       <Left>
         <Row0>
           <Sizes>
-            <Wnd0>
+            <Wnd2>
               <Rect>
                 <Top>-2</Top>
                 <Left>-2</Left>
@@ -100,7 +107,7 @@
                 <sizeVertCX>130208</sizeVertCX>
                 <sizeVertCY>722670</sizeVertCY>
               </Rect>
-            </Wnd0>
+            </Wnd2>
           </Sizes>
         </Row0>
       </Left>
@@ -112,7 +119,7 @@
       <Bottom>
         <Row0>
           <Sizes>
-            <Wnd1>
+            <Wnd3>
               <Rect>
                 <Top>-2</Top>
                 <Left>-2</Left>
@@ -127,7 +134,7 @@
                 <sizeVertCX>130208</sizeVertCX>
                 <sizeVertCY>230150</sizeVertCY>
               </Rect>
-            </Wnd1>
+            </Wnd3>
           </Sizes>
         </Row0>
       </Bottom>

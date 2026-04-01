@@ -55,11 +55,11 @@
       <Pane>
         <Tab>
           <Factory>TextEditor</Factory>
-          <Filename>$WS_DIR$\ADC.c</Filename>
+          <Filename>$WS_DIR$\UART.c</Filename>
           <XPos>0</XPos>
-          <YPos>221</YPos>
-          <SelStart>162</SelStart>
-          <SelEnd>162</SelEnd>
+          <YPos>45</YPos>
+          <SelStart>692</SelStart>
+          <SelEnd>692</SelEnd>
         </Tab>
         <ActiveTab>0</ActiveTab>
       </Pane>

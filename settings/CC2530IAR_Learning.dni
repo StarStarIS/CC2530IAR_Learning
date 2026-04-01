@@ -22,3 +22,5 @@ SuppressDialog=0
 [TraceHelper]
 Enabled=0
 ShowSource=1
+[DebugChecksum]
+Checksum=769372253

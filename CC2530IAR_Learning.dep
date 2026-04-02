@@ -2,7 +2,7 @@
 
 <project>
   <fileVersion>2</fileVersion>
-  <fileChecksum>1533112427</fileChecksum>
+  <fileChecksum>3701005610</fileChecksum>
   <configuration>
     <name>Debug</name>
     <outputs>
@@ -24,6 +24,9 @@
       <file>$TOOLKIT_DIR$\inc\ioCC2530.h</file>
       <file>$PROJ_DIR$\Debug\Obj\CC2530IAR_Learning.pbd</file>
       <file>$PROJ_DIR$\Debug\Obj\SW12_RunningLights.r51</file>
+      <file>$PROJ_DIR$\TemperatureHumidity_SerialPort.c</file>
+      <file>$PROJ_DIR$\Debug\Obj\TemperatureHumidity_SerialPort.r51</file>
+      <file>$PROJ_DIR$\Debug\Obj\TemperatureHumidity_SerialPort.pbi</file>
     </outputs>
     <file>
       <name>$PROJ_DIR$\Debug\Exe\CC2530IAR_Learning.d51</name>
@@ -36,7 +39,7 @@
       <inputs>
         <tool>
           <name>XLINK</name>
-          <file> 6 12 7</file>
+          <file> 6 19 7</file>
         </tool>
       </inputs>
     </file>
@@ -146,7 +149,30 @@
       <inputs>
         <tool>
           <name>BILINK</name>
-          <file> 10</file>
+          <file> 20</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\TemperatureHumidity_SerialPort.c</name>
+      <outputs>
+        <tool>
+          <name>ICC8051</name>
+          <file> 19</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 20</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICC8051</name>
+          <file> 15</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 15</file>
         </tool>
       </inputs>
     </file>
